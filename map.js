@@ -24,7 +24,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove 
 //   }
 // }
 
-class App extends React.Component {
+class Map extends React.Component {
  state = {
    initialRegion: {
     latitude: 9.5903024,
@@ -103,4 +103,4 @@ const styles = StyleSheet.create({
     margin: 10
   }
   });
-export default App;
+export default Map;
