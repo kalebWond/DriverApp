@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, StatusBar,
+  TouchableOpacity, Text, TextInput } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
 
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
@@ -24,7 +25,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove 
 //   }
 // }
 
-class App extends React.Component {
+class Map extends React.Component {
  state = {
    initialRegion: {
     latitude: 9.5903024,
@@ -49,6 +50,8 @@ class App extends React.Component {
  render() {
    return (
    <View style={styles.container}>
+     <StatusBar backgroundColor="orange"
+            barStyle="light-content" />
      <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
        style={styles.map}
@@ -70,6 +73,9 @@ class App extends React.Component {
           style={styles.addressInput}
             />
          </View>
+         <TouchableOpacity style={styles.button}>
+            <Text style={{fontSize: 18, color: "white", fontWeight: 'bold'}}>Book a ride &rarr;</Text>
+        </TouchableOpacity>
      </View>
    </View>
     );
@@ -85,22 +91,38 @@ const styles = StyleSheet.create({
   },
   map: {
     // ...StyleSheet.absoluteFillObject,
-    height: "70%",
+    height: "65%",
   },
   formContainer: {
     width: "100%",
-    height: "30%",
+    height: "35%",
     backgroundColor: "#eee",
+    // alignItems: "center"
   },
   addressInput: {
-    width: "60%",
+    width: "70%",
     borderColor: 'orange',
     borderWidth: 1,
-    padding: 5,
-    // paddingLeft: 5,
+    padding: 8,
+    paddingLeft: 10,
     fontSize: 15,
+    margin: 10,
     borderRadius: 10,
-    margin: 10
-  }
+    marginBottom: 2,
+    left: "15%"
+  },
+  button: {
+    alignSelf: "center",
+    // width: "70%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "#ffa500",
+    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 50,
+    marginTop: 30,
+    elevation: 5
+  },
   });
-export default App;
+export default Map;

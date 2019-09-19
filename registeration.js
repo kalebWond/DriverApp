@@ -1,23 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, StatusBar,
+   TextInput, Image, TouchableOpacity } from 'react-native';
 
 class Registration extends React.Component {
  
   constructor(props) {
     super(props);
     this.state = { 
-      phoneNumber: '+251' 
+      phoneNumber: '+251 ' 
     };
   }
 
  render() {
    return (
    <View style={styles.container}>
+     <StatusBar backgroundColor="orange"
+            barStyle="light-content" />
     <Text style={styles.title}>Please, enter your phone number</Text>
     <View style={styles.inputContainer}>
       {/* <Text style={{fontSize: 20}}>+251</Text>  */}
       <TextInput
-        defaultValue="+251"
+        defaultValue="+251 "
         maxLength={13}
         keyboardType={'phone-pad'}
         style={styles.phoneInput}
@@ -28,14 +31,17 @@ class Registration extends React.Component {
     <TouchableOpacity style={styles.button}>
       <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>Submit</Text>
     </TouchableOpacity>
+    <Image style={styles.img}
+          source={require('./assests/img/car-4.png')}
+        />
    </View>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     alignItems: "center",
+    justifyContent: "space-evenly",
     height: "100%",
     backgroundColor: "#ddd"
   },
@@ -57,7 +63,8 @@ const styles = StyleSheet.create({
     // paddingLeft: 5,
     fontSize: 20,
     borderRadius: 10,
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: -50
   },
   button: {
     width: "80%",
@@ -65,6 +72,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffa500",
     padding: 10,
     borderRadius: 50,
+    marginTop: -50,
+    elevation: 5
+
+  },
+  img: {
+    width: 300,
+    height: 250
   }
   });
 export default Registration;
