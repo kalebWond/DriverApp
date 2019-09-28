@@ -21,7 +21,7 @@ class Cards extends React.Component {
           barStyle="light-content"
         />
        <TouchableOpacity style={styles.card}>
-          <Image style={styles.images}  source={require('./assests/img/car-1.png')} />
+          <Image style={styles.images}  source={require('../assests/img/car-1.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
             <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>
@@ -29,7 +29,7 @@ class Cards extends React.Component {
           </View>
        </TouchableOpacity>
        <TouchableOpacity style={styles.card}>
-          <Image style={styles.images} source={require('./assests/img/car-2.png')} />
+          <Image style={styles.images} source={require('../assests/img/car-2.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
             <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>
@@ -37,7 +37,7 @@ class Cards extends React.Component {
           </View>
        </TouchableOpacity>
        <TouchableOpacity style={styles.card}>
-          <Image style={styles.images} source={require('./assests/img/car-3.png')} />
+          <Image style={styles.images} source={require('../assests/img/car-3.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
             <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>

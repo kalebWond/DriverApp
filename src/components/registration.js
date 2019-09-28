@@ -14,26 +14,26 @@ class Registration extends React.Component {
  render() {
    return (
    <View style={styles.container}>
-     <StatusBar backgroundColor="orange"
-            barStyle="light-content" />
-    <Text style={styles.title}>Please, enter your phone number</Text>
-    <View style={styles.inputContainer}>
-      {/* <Text style={{fontSize: 20}}>+251</Text>  */}
-      <TextInput
-        defaultValue="+251 "
-        maxLength={13}
-        keyboardType={'phone-pad'}
-        style={styles.phoneInput}
-        onChangeText={(text) => this.setState({phoneNumber: text})}
-        value={this.state.phoneNumber}
-      />
-    </View>
-    <TouchableOpacity style={styles.button}>
-      <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>Submit</Text>
-    </TouchableOpacity>
-    <Image style={styles.img}
-          source={require('./assests/img/car-4.png')}
+      <StatusBar backgroundColor="blue"
+              barStyle="light-content" />
+      <Text style={styles.title}>Please, enter your phone number</Text>
+      <View style={styles.inputContainer}>
+        {/* <Text style={{fontSize: 20}}>+251</Text>  */}
+        <TextInput
+          defaultValue="+251 "
+          maxLength={13}
+          keyboardType={'phone-pad'}
+          style={styles.phoneInput}
+          onChangeText={(text) => this.setState({phoneNumber: text})}
+          value={this.state.phoneNumber}
         />
+      </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>Submit</Text>
+      </TouchableOpacity>
+      <Image style={styles.img}
+            source={require('../assests/img/car-4.png')}
+          />
    </View>
     );
   }
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   phoneInput: {
     flex: 1,
-    borderColor: 'orange',
+    borderColor: '#156fca',
     borderWidth: 1,
     padding: 10,
     // paddingLeft: 5,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   button: {
     width: "80%",
     alignItems: "center",
-    backgroundColor: "#ffa500",
+    backgroundColor: "#156fca", 
     padding: 10,
     borderRadius: 50,
     marginTop: -50,

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   addressInput: {
     width: "70%",
-    borderColor: 'orange',
+    borderColor: '#156fca',
     borderWidth: 1,
     padding: 8,
     paddingLeft: 10,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     // width: "70%",
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: "#ffa500",
+    backgroundColor: "#156fca",
     padding: 10,
     paddingLeft: 15,
     paddingRight: 15,
