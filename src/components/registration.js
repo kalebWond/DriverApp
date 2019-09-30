@@ -7,14 +7,28 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      phoneNumber: '+251 ' 
+      phoneNumber: '+251' 
     };
+  }
+
+  static navigationOptions = {
+    header: null
+  };
+
+  onSubmit = () => {
+    if(this.state.phoneNumber.trim().length >= 4 && this.state.phoneNumber.length > 9) {
+      this.props.navigation.navigate("Map",{
+        "phone": this.state.phoneNumber
+      });
+      console.log(this.props.navigation.state.params);
+    }
+    else {alert("Please, type a correct phone number")}
   }
 
  render() {
    return (
    <View style={styles.container}>
-      <StatusBar backgroundColor="blue"
+      <StatusBar backgroundColor="transparent"
               barStyle="light-content" />
       <Text style={styles.title}>Please, enter your phone number</Text>
       <View style={styles.inputContainer}>
@@ -28,7 +42,8 @@ class Registration extends React.Component {
           value={this.state.phoneNumber}
         />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+        onPress={this.onSubmit} >
         <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>Submit</Text>
       </TouchableOpacity>
       <Image style={styles.img}
@@ -57,7 +72,7 @@ const styles = StyleSheet.create({
   },
   phoneInput: {
     flex: 1,
-    borderColor: '#156fca',
+    borderColor: '#25bbf4',
     borderWidth: 1,
     padding: 10,
     // paddingLeft: 5,

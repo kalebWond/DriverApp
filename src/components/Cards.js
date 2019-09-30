@@ -7,20 +7,32 @@ class Cards extends React.Component {
  
   constructor(props) {
     super(props);
-    this.state = { 
-      phoneNumber: '+251' 
-    };
   }
+  static navigationOptions = {
+    title: 'Choose Service Type',
+    headerTintColor: '#333',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#888',
+    },
 
+  };
+onPressCard = () => {
+  this.props.navigation.navigate('Driver',{
+    ...this.props.navigation.state.params
+  });
+  console.log(this.props.navigation.state.params);
+
+}
  render() {
    return (
      <View style={styles.container}>
-       <Text style={styles.header}>Choose Car Type</Text>
        <StatusBar
-          backgroundColor="orange"
+          backgroundColor="transparent"
           barStyle="light-content"
         />
-       <TouchableOpacity style={styles.card}>
+       <TouchableOpacity style={styles.card}
+          onPress= {this.onPressCard} >
           <Image style={styles.images}  source={require('../assests/img/car-1.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
@@ -28,7 +40,8 @@ class Cards extends React.Component {
             <Text style={styles.detail}>05:00pm - 12:00am: 15 br</Text>
           </View>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.card}>
+       <TouchableOpacity style={styles.card}
+          onPress={() => alert("Sorry, this service is not yet available")} >
           <Image style={styles.images} source={require('../assests/img/car-2.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
@@ -36,7 +49,8 @@ class Cards extends React.Component {
             <Text style={styles.detail}>05:00pm - 12:00am: 15 br</Text>
           </View>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.card}>
+       <TouchableOpacity style={styles.card}
+          onPress={() => alert("Sorry, this service is not yet available")} >
           <Image style={styles.images} source={require('../assests/img/car-3.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>Car type: Regular</Text>
@@ -56,12 +70,12 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "space-between",
   },
-  header: {
-    fontSize: 20,
-    textAlign: "center",
-    marginBottom: 5,
-    marginTop: -15
-  },
+  // header: {
+  //   fontSize: 20,
+  //   textAlign: "center",
+  //   marginBottom: 5,
+  //   marginTop: -15
+  // },
   card: {
     width: "100%",
     height: "32%",

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import MapScreen from './src/components/map';
 import CardScreen from './src/components/Cards';
 import DriverScreen from './src/components/Driver';
 import RegistrationScreen from './src/components/registration';
+
 
 const AppNavigator = createStackNavigator(
   {

@@ -1,29 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, StatusBar,
-  TouchableOpacity, Text, TextInput } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
-
+import { StyleSheet, View, StatusBar, Image,
+        TouchableOpacity, Text, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-
-// async function requestCameraPermission() {
-//   try {
-//     const granted = await PermissionsAndroid.request(
-//       PermissionsAndroid.PERMISSIONS.CAMERA,
-//       {
-//         'title': 'Cool Photo App Camera Permission',
-//         'message': 'Cool Photo App needs access to your camera ' +
-//                    'so you can take awesome pictures.'
-//       }
-//     )
-//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//       console.log("You can use the camera")
-//     } else {
-//       console.log("Camera permission denied")
-//     }
-//   } catch (err) {
-//     console.warn(err)
-//   }
-// }
 
 class Map extends React.Component {
  state = {
@@ -36,44 +14,67 @@ class Map extends React.Component {
    currentLocation: {
      latitude: 9.5928629,
      longitude: 41.8600771
-   }
+   },
+   destination: ""
  }
- componentDidMount = () => {
-  // Geolocation.getCurrentPosition((data) => {
-  //   alert(data)
-  // },
-  // (err) => {
-  //   alert(err)
-  // }
-  // )
+
+ static navigationOptions = {
+  title: 'Tap your pick up location on the map',
+  headerTintColor: '#333',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    color: '#888',
+    fontSize: 15,
+  },
+
+};
+
+onBook = () => {
+  if(this.state.destination.trim().length > 3) {
+    this.props.navigation.navigate("Card", {
+      phone: this.props.navigation.getParam("phone","0913467913"),
+      pickup: this.state.currentLocation,
+      destination: this.state.destination
+    });
+    console.log(this.props.navigation.state.params);
+
+  }
+  else {
+    alert("Please, Input a valid destination");
+  }
+}
+
+changeLocation (e) {
+  // this.setState({ currentLocation: e.nativeEvent.coordinate });
+  console.log('this.state.currentLocation');
 }
  render() {
    return (
    <View style={styles.container}>
-     <StatusBar backgroundColor="orange"
+     <StatusBar backgroundColor="transparent"
             barStyle="light-content" />
      <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
        style={styles.map}
+       onPress={ (e) => this.setState({currentLocation: e.nativeEvent.coordinate})}
        region={ this.state.initialRegion } >
        <Marker
           coordinate={this.state.currentLocation}
-          onDragEnd={(e) => this.setState({ currentLocation: e.nativeEvent.coordinate })}
+          onDragEnd={(e) => this.setState({currentLocation: e.nativeEvent.coordinate})}
+          draggable
           />
 
      </MapView>
      <View style={styles.formContainer}>
-        <View>
-          <TextInput placeholder="Your location"
-            style={styles.addressInput}
-          /> 
-         </View>
-         <View>
+         <View style={styles.inputContainer}>
           <TextInput placeholder="Your destination"
-          style={styles.addressInput}
+          style={styles.addressInput} value={this.state.destination}
+          onChangeText={(text) => this.setState({destination: text})}
             />
+          <Image style={styles.ping} source={require('../assests/img/location.png')} />
          </View>
-         <TouchableOpacity style={styles.button}>
+         <TouchableOpacity style={styles.button}
+            onPress={this.onBook} >
             <Text style={{fontSize: 18, color: "white", fontWeight: 'bold'}}>Book a ride &rarr;</Text>
         </TouchableOpacity>
      </View>
@@ -91,17 +92,23 @@ const styles = StyleSheet.create({
   },
   map: {
     // ...StyleSheet.absoluteFillObject,
-    height: "65%",
+    height: "75%",
   },
   formContainer: {
     width: "100%",
-    height: "35%",
+    height: "25%",
     backgroundColor: "#eee",
+    justifyContent: "center"
     // alignItems: "center"
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: "space-evenly"
   },
   addressInput: {
     width: "70%",
-    borderColor: '#156fca',
+    borderColor: '#25bbf4',
     borderWidth: 1,
     padding: 8,
     paddingLeft: 10,
@@ -110,6 +117,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 2,
     left: "15%"
+  },
+  ping: {
+    width: 50,
+    height: 50
   },
   button: {
     alignSelf: "center",
@@ -121,7 +132,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 50,
-    marginTop: 30,
+    marginTop: 20,
     elevation: 5
   },
   });
