@@ -5,6 +5,7 @@ import MapScreen from './src/components/map';
 import CardScreen from './src/components/Cards';
 import DriverScreen from './src/components/Driver';
 import RegistrationScreen from './src/components/registration';
+import {PermissionsAndroid} from 'react-native';
 
 
 const AppNavigator = createStackNavigator(

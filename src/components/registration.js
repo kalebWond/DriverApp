@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, StatusBar,
+import { StyleSheet, View, Text, StatusBar, PermissionsAndroid,
    TextInput, Image, TouchableOpacity } from 'react-native';
 
 class Registration extends React.Component {
@@ -7,7 +7,8 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      phoneNumber: '+251' 
+      phoneNumber: '+251',
+      hasLocationPermission: ''
     };
   }
 
@@ -15,12 +16,42 @@ class Registration extends React.Component {
     header: null
   };
 
+  componentDidMount= () => {
+    var that = this;
+    async function requestLocationPermission() {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'ባለጋሪ ተጓዥ App Location Permission',
+            message:
+              'ባለጋሪ ተጓዥ App needs access to your Location ',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You have the Location permission');
+          that.setState({hasLocationPermission: true})
+        } else {
+          console.log('Location permission denied');
+          that.setState({hasLocationPermission: false})
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    requestLocationPermission();
+  }
+
   onSubmit = () => {
     if(this.state.phoneNumber.trim().length >= 4 && this.state.phoneNumber.length > 9) {
-      this.props.navigation.navigate("Map",{
-        "phone": this.state.phoneNumber
+      this.props.navigation.navigate("Map", {
+        "phone": this.state.phoneNumber,
+        "hasLocationPermission": this.state.hasLocationPermission
       });
-      console.log(this.props.navigation.state.params);
     }
     else {alert("Please, type a correct phone number")}
   }

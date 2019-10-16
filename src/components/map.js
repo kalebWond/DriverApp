@@ -2,18 +2,19 @@ import React from 'react';
 import { StyleSheet, View, StatusBar, Image,
         TouchableOpacity, Text, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import Geolocation from 'react-native-geolocation-service';
 
 class Map extends React.Component {
  state = {
    initialRegion: {
     latitude: 9.5903024,
     longitude: 41.8570132,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.0021,
    },
    currentLocation: {
-     latitude: 9.5928629,
-     longitude: 41.8600771
+     latitude: 9.5903024,
+     longitude: 41.8570132
    },
    destination: ""
  }
@@ -29,6 +30,35 @@ class Map extends React.Component {
 
 };
 
+componentDidMount = () => {
+this.pingLocation();
+}
+
+pingLocation = () => {
+   
+  if (this.props.navigation.state.params.hasLocationPermission) {
+    Geolocation.getCurrentPosition(
+        (position) => {
+          let {latitude, longitude} = position.coords;
+          // console.log({...this.state.initialRegion, latitude, longitude});
+          this.setState({
+            initialRegion: {...this.state.initialRegion, latitude, longitude},
+            currentLocation: {latitude, longitude}
+            });
+          console.log(this.state.initialRegion);
+        },
+        (error) => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+            if(error.code === 3) {
+              this.pingLocation();
+              console.log("Retrying...")
+            }
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }
+}
 onBook = () => {
   if(this.state.destination.trim().length > 3) {
     this.props.navigation.navigate("Card", {
@@ -48,6 +78,8 @@ changeLocation (e) {
   // this.setState({ currentLocation: e.nativeEvent.coordinate });
   console.log('this.state.currentLocation');
 }
+
+
  render() {
    return (
    <View style={styles.container}>
@@ -61,7 +93,7 @@ changeLocation (e) {
        <Marker
           coordinate={this.state.currentLocation}
           onDragEnd={(e) => this.setState({currentLocation: e.nativeEvent.coordinate})}
-          draggable
+          draggable flat={true}
           />
 
      </MapView>
@@ -132,7 +164,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 50,
-    marginTop: 20,
+    marginTop: 18,
     elevation: 5
   },
   });
