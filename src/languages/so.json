@@ -1,0 +1,21 @@
+{
+    "registrationPageTitle" : "Diiwaangelinta",
+    "enterPhoneNumber": "Fadlan, gali lambarkaaga taleefanka",
+    "register": "Diiwaangelinta",
+    "registerAlert": "Fadlan, ku qor lambar taleefan sax ah",
+    "mapPageTitle": "Taabo meesha aad ka soo qaadatay khariidada",
+    "yourDestination": "Ujeeddadaada",
+    "bookRide": "U wac gaadiidka",
+    "mapAlert": "Fadlan, Gali meel sax ah",
+    "cardsTitle": "Xulo Nooca Adeegga",
+    "carType": "Nooca gaariga",
+    "regular": "Joogto ah",
+    "sedan": "Sedan",
+    "ambulance": "Ambalaas",
+    "driverTitle": "Macluumaadka safarka",
+    "driverName": "Magaca darawalka",
+    "phone": "Lambarka taleefanka",
+    "type": "Nooca gaariga",
+    "driverStatus": "macluumaadka darawalka",
+    "ontheway": "way imaanaysaa"
+}

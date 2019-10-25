@@ -1,0 +1,21 @@
+{
+    "registrationPageTitle" : "ምዝገባ",
+    "enterPhoneNumber": "እባክዎን የስልክ ቁጥርዎን ያስገቡ",
+    "register": "ይመዝገቡ",
+    "registerAlert": "እባክዎን ትክክለኛ የስልክ ቁጥር ይተይቡ",
+    "mapPageTitle": "መነሻ ቦታዎን በካርታው ላይ ጠቅ ያድርጉ",
+    "yourDestination": "መድረሻዎ",
+    "bookRide": "መጓጓዣ ጥራ",
+    "mapAlert": "እባክዎን ትክክለኛ መድረሻ ያስገቡ",
+    "cardsTitle": "የአገልግሎት ዓይነት ይምረጡ",
+    "carType": "የመኪና ዓይነት",
+    "regular": "መደበኛ",
+    "sedan": "የቤት መኪና",
+    "ambulance": "አምቡላንስ",
+    "driverTitle": "የጉዞ መረጃ",
+    "driverName": "የሹፌር ስም",
+    "phone": "ስልክ ቁጥር",
+    "type": "የመኪና ዓይነት",
+    "driverStatus": "የሹፌር ሁኔታ",
+    "ontheway": "እየመጣ ነው"
+}

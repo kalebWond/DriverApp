@@ -1,7 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, 
-  Text, Image, 
+  Text, Image, Modal,
   StatusBar, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { changeLanguage } from '../actions/changeLanguage';
+import SettingsModal from './modal';
 
 class Driver extends React.Component {
  
@@ -9,24 +14,39 @@ class Driver extends React.Component {
     super(props);
   }
 
-  static navigationOptions = {
-    title: 'Trip Details',
-    headerTintColor: '#333',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      color: '#888',
-    },
+  state = {
+    modalVisible: false
+  }
 
-  };
+  static navigationOptions = ({ navigation}) => {
+    return {
+      title: 'Trip Details',
+      headerTintColor: '#333',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: '#888',
+      },
+      headerRight: (
+        <TouchableOpacity onPress={navigation.getParam('toggleModal')}>
+          <Icon name="cog" size={30} style={{marginRight: 20}} color="#888" />
+        </TouchableOpacity>
+      )
+    }
+  }
 
 componentDidMount() {
-  console.log(this.props.navigation.state)
+  this.props.navigation.setParams({ toggleModal: this._toggleModal });  
 }
+
+_toggleModal = () => {
+  this.setState({ modalVisible: !this.state.modalVisible });
+};
+
 
  render() {
    return (
      <View style={styles.container}>
-       <StatusBar backgroundColor="transparent"
+       <StatusBar backgroundColor="grey"
             barStyle="light-content" />
         <View style={styles.card}>
           <View style={styles.imgCont}>
@@ -35,31 +55,33 @@ componentDidMount() {
           <View style={styles.details}>
 
             <View style={styles.detailGroup}>
-              <Text style={styles.question}>Driver name</Text>
+              <Text style={styles.question}>{this.props.phrases.driverName}</Text>
               <Text style={styles.answer}>Taddesse Getachew</Text>
             </View>
 
             <View style={styles.detailGroup}>
-              <Text style={styles.question}>Phone number</Text>
+              <Text style={styles.question}>{this.props.phrases.phone}</Text>
               <Text style={styles.answer}>+251 956 456 547</Text>
             </View>
 
             <View style={styles.detailGroup}>
-              <Text style={styles.question}>Car model</Text>
-              <Text style={styles.answer}>Toyota</Text>
+              <Text style={styles.question}>{this.props.phrases.type}</Text>
+              <Text style={styles.answer}>{this.props.navigation.state.params.type}</Text>
             </View>
 
             <View style={styles.detailGroup}>
-              <Text style={styles.question}>Your destination</Text>
+              <Text style={styles.question}>{this.props.phrases.yourDestination}</Text>
               <Text style={styles.answer}>{ this.props.navigation.state.params.destination}</Text>
             </View>
 
             <View style={styles.detailGroup}>
-              <Text style={styles.question}>Driver Status</Text>
-              <Text style={{...styles.answer, color: "blue"}}>On the way</Text>
+              <Text style={styles.question}>{this.props.phrases.driverStatus}</Text>
+              <Text style={{...styles.answer, color: "blue"}}>{this.props.phrases.ontheway}</Text>
             </View>
           </View>
         </View>
+        <SettingsModal toggleModal={this._toggleModal} modalVisible={this.state.modalVisible}
+        onChangeLanguage={this.props.onChangeLanguage} />
      </View>
    )};
   }
@@ -104,4 +126,17 @@ const styles = StyleSheet.create({
      fontWeight: "bold"
    }
 });
-export default Driver;
+
+const mapStateToProps = (state) => {
+  return {
+    phrases: state.language.phrases
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChangeLanguage: (language) => dispatch(changeLanguage(language))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Driver);

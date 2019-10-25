@@ -1,6 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, View, Text, StatusBar, PermissionsAndroid,
    TextInput, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import SettingsModal from './modal';
+import { changeLanguage } from '../actions/changeLanguage';
 
 class Registration extends React.Component {
  
@@ -8,15 +12,30 @@ class Registration extends React.Component {
     super(props);
     this.state = { 
       phoneNumber: '+251',
-      hasLocationPermission: ''
+      hasLocationPermission: '',
+      modalVisible: false
     };
   }
 
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = ({ navigation}) => {
+    return {
+      title: 'Registration',
+      headerTintColor: '#333',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: '#888',
+      },
+      headerRight: (
+        <TouchableOpacity onPress={navigation.getParam('toggleModal')}>
+          <Icon name="cog" size={30} style={{paddingRight: 15, paddingLeft: 18, marginRight: 5}} color="#888" />
+        </TouchableOpacity>
+      )
+    }
+  }
 
   componentDidMount= () => {
+    this.props.navigation.setParams({ toggleModal: this._toggleModal });
+
     var that = this;
     async function requestLocationPermission() {
       try {
@@ -45,6 +64,10 @@ class Registration extends React.Component {
 
     requestLocationPermission();
   }
+  
+  _toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  };
 
   onSubmit = () => {
     if(this.state.phoneNumber.trim().length >= 4 && this.state.phoneNumber.length > 9) {
@@ -53,15 +76,15 @@ class Registration extends React.Component {
         "hasLocationPermission": this.state.hasLocationPermission
       });
     }
-    else {alert("Please, type a correct phone number")}
+    else {alert(this.props.phrases.registerAlert)}
   }
 
  render() {
    return (
    <View style={styles.container}>
-      <StatusBar backgroundColor="transparent"
+      <StatusBar backgroundColor="grey"
               barStyle="light-content" />
-      <Text style={styles.title}>Please, enter your phone number</Text>
+      <Text style={styles.title}>{this.props.phrases.enterPhoneNumber}</Text>
       <View style={styles.inputContainer}>
         {/* <Text style={{fontSize: 20}}>+251</Text>  */}
         <TextInput
@@ -75,11 +98,13 @@ class Registration extends React.Component {
       </View>
       <TouchableOpacity style={styles.button}
         onPress={this.onSubmit} >
-        <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>Submit</Text>
+        <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>{this.props.phrases.register}</Text>
       </TouchableOpacity>
       <Image style={styles.img}
             source={require('../assests/img/car-4.png')}
           />
+      <SettingsModal toggleModal={this._toggleModal} modalVisible={this.state.modalVisible}
+        onChangeLanguage={this.props.onChangeLanguage} />
    </View>
     );
   }
@@ -127,4 +152,16 @@ const styles = StyleSheet.create({
     height: 250
   }
   });
-export default Registration;
+
+  const mapStateToProps = (state) => {
+    return {
+      phrases: state.language.phrases
+    }
+  }
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      onChangeLanguage: (language) => dispatch(changeLanguage(language))
+    }
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

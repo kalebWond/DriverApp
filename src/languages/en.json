@@ -1,0 +1,21 @@
+{
+    "registrationPageTitle" : "Registration",
+    "enterPhoneNumber": "Please, enter your phone number",
+    "register": "Register",
+    "registerAlert": "Please, type a correct phone number",
+    "mapPageTitle": "Tap your pick up location",
+    "yourDestination": "Your destination",
+    "bookRide": "Book a ride",
+    "mapAlert": "Please, Enter a valid destination",
+    "cardsTitle": "Choose Service Type",
+    "carType": "Car type",
+    "regular": "Regular",
+    "sedan": "Sedan",
+    "ambulance": "Ambulance",
+    "driverTitle": "Trip Details",
+    "driverName": "Driver Name",
+    "phone": "Phone Number",
+    "type": "Car Type",
+    "driverStatus": "Driver Status",
+    "ontheway": "On the way"
+}
