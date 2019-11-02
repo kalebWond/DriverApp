@@ -15,7 +15,7 @@ class Driver extends React.Component {
   }
 
   state = {
-    modalVisible: false
+    modalVisible: false,
   }
 
   static navigationOptions = ({ navigation}) => {
@@ -66,9 +66,9 @@ _toggleModal = () => {
 
             <View style={styles.detailGroup}>
               <Text style={styles.question}>{this.props.phrases.type}</Text>
-              <Text style={styles.answer}>{this.props.navigation.state.params.type}</Text>
+              <Text style={styles.answer}>{this.props.phrases[`${this.props.navigation.state.params.type}`]}</Text>
             </View>
-
+            
             <View style={styles.detailGroup}>
               <Text style={styles.question}>{this.props.phrases.yourDestination}</Text>
               <Text style={styles.answer}>{ this.props.navigation.state.params.destination}</Text>
@@ -119,11 +119,12 @@ const styles = StyleSheet.create({
 
    },
    question: {
-
+    width: "45%"
    },
    answer: {
-     fontSize: 15,
-     fontWeight: "bold"
+    // width: "50%",
+    fontSize: 15,
+    fontWeight: "bold",
    }
 });
 

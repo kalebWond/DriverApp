@@ -52,26 +52,27 @@ _toggleModal = () => {
 pingLocation = () => {
    
   if (this.props.navigation.state.params.hasLocationPermission) {
-    // Geolocation.getCurrentPosition(
-    //     (position) => {
-    //       let {latitude, longitude} = position.coords;
-    //       // console.log({...this.state.initialRegion, latitude, longitude});
-    //       this.setState({
-    //         initialRegion: {...this.state.initialRegion, latitude, longitude},
-    //         currentLocation: {latitude, longitude}
-    //         });
-    //       console.log(this.state.initialRegion);
-    //     },
-    //     (error) => {
-    //         // See error code charts below.
-    //         console.log(error.code, error.message);
-    //         if(error.code === 3) {
-    //           this.pingLocation();
-    //           console.log("Retrying...")
-    //         }
-    //     },
-    //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    // );
+    Geolocation.getCurrentPosition(
+        (position) => {
+          let {latitude, longitude} = position.coords;
+          console.log(position.coords, "success");
+          // console.log({...this.state.initialRegion, latitude, longitude});
+          this.setState({
+            initialRegion: {...this.state.initialRegion, latitude, longitude},
+            currentLocation: {latitude, longitude}
+            });
+          console.log(this.state.initialRegion);
+        },
+        (error) => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+            if(error.code === 3) {
+              this.pingLocation();
+              console.log("Retrying...")
+            }
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
   }
 }
 onBook = () => {
@@ -108,7 +109,7 @@ changeLocation (e) {
        <Marker
           coordinate={this.state.currentLocation}
           onDragEnd={(e) => this.setState({currentLocation: e.nativeEvent.coordinate})}
-          draggable flat={true}
+          draggable
           />
 
      </MapView>
@@ -118,7 +119,9 @@ changeLocation (e) {
           style={styles.addressInput} value={this.state.destination}
           onChangeText={(text) => this.setState({destination: text})}
             />
-          <Image style={styles.ping} source={require('../assests/img/location.png')} />
+          <TouchableOpacity onPress={this.pingLocation}>
+            <Image style={styles.ping} source={require('../assests/img/location.png')} />
+          </TouchableOpacity>
          </View>
          <TouchableOpacity style={styles.button}
             onPress={this.onBook} >

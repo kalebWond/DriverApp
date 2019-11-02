@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, 
-  Text, Image, Modal,
+  Text, Image, Modal, SafeAreaView, ScrollView,
   StatusBar, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -51,29 +51,38 @@ class Cards extends React.Component {
   }
  render() {
    return (
-     <View style={styles.container}>
-       <StatusBar
-          backgroundColor="grey"
-          barStyle="light-content"
-        />
-       <TouchableOpacity style={styles.card}
-          onPress= {() => this.onPressCard("regular")} >
-          <Image style={styles.images}  source={require('../assests/img/car-1.png')} />
+     <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+      <TouchableOpacity style={styles.card}
+          onPress= {() => this.onPressCard("bajaj")} >
+          <Image style={{width: 100, height: 80, marginBottom: 10}}  source={require('../assests/img/car-5.png')} />
           <View style={styles.textGroup}>
-            <Text style={styles.detail}>{this.props.phrases.carType}: {this.props.phrases.regular}</Text>
+          <Text style={styles.detail}>{this.props.phrases.carType}: {this.props.phrases.bajaj}</Text>
             <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>
             <Text style={styles.detail}>05:00pm - 12:00am: 15 br</Text>
           </View>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.card}
-          onPress= {() => this.onPressCard("sedan")} >
-          <Image style={styles.images} source={require('../assests/img/car-2.png')} />
+
+      <TouchableOpacity style={styles.card}
+          onPress= {() => this.onPressCard("regular")} >
+          <Image style={styles.images}  source={require('../assests/img/car-1.png')} />
           <View style={styles.textGroup}>
             <Text style={styles.detail}>{this.props.phrases.carType}: {this.props.phrases.sedan}</Text>
             <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>
             <Text style={styles.detail}>05:00pm - 12:00am: 15 br</Text>
           </View>
        </TouchableOpacity>
+
+       <TouchableOpacity style={styles.card}
+          onPress= {() => this.onPressCard("sedan")} >
+          <Image style={styles.images} source={require('../assests/img/car-2.png')} />
+          <View style={styles.textGroup}>
+            <Text style={styles.detail}>{this.props.phrases.carType}: {this.props.phrases.regular}</Text>
+            <Text style={styles.detail}>12:00am - 05:00pm: 10 br</Text>
+            <Text style={styles.detail}>05:00pm - 12:00am: 15 br</Text>
+          </View>
+       </TouchableOpacity>
+
        <TouchableOpacity style={styles.card}
           onPress= {() => this.onPressCard("ambulance")} >
           <Image style={styles.images} source={require('../assests/img/car-3.png')} />
@@ -86,14 +95,14 @@ class Cards extends React.Component {
 
        <SettingsModal toggleModal={this._toggleModal} modalVisible={this.state.modalVisible}
         onChangeLanguage={this.props.onChangeLanguage} />
-     </View>
+      </ScrollView>
+    </SafeAreaView>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     backgroundColor: "#eee",
     padding: 20,
     justifyContent: "space-between",
@@ -106,7 +115,10 @@ const styles = StyleSheet.create({
   // },
   card: {
     width: "100%",
-    height: "32%",
+    // marginTop: 10,
+    marginBottom: 10,
+    padding: 15,
+    // height: "35%",
     backgroundColor: "white",
     elevation: 5,
     borderRadius: 5,
