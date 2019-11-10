@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, StatusBar, PermissionsAndroid,
-   TextInput, Image, TouchableOpacity } from 'react-native';
+  Keyboard, TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SettingsModal from './modal';
 import { changeLanguage } from '../actions/changeLanguage';
+import { database } from '../config/firebase';
+import * as Progress from 'react-native-progress';
 
 class Registration extends React.Component {
  
@@ -13,7 +15,9 @@ class Registration extends React.Component {
     this.state = { 
       phoneNumber: '+251',
       hasLocationPermission: '',
-      modalVisible: false
+      modalVisible: false,
+      key: '',
+      loading: false
     };
   }
 
@@ -63,6 +67,15 @@ class Registration extends React.Component {
     }
 
     requestLocationPermission();
+
+    // database.ref('/passengers').on('value', (data) => {
+    //   if(data.val() != null) {
+    //     setTimeout(() => {
+    //       console.log(data.val()[this.state.key]);
+    //     }, 100);
+    //   }
+    //   else { console.log("It was null") } 
+    // })
   }
   
   _toggleModal = () => {
@@ -70,16 +83,26 @@ class Registration extends React.Component {
   };
 
   onSubmit = () => {
+    this.setState({ loading: true });
+    Keyboard.dismiss();
     if(this.state.phoneNumber.trim().length >= 4 && this.state.phoneNumber.length > 9) {
-      this.props.navigation.navigate("Map", {
-        "phone": this.state.phoneNumber,
-        "hasLocationPermission": this.state.hasLocationPermission
+      let key = database.ref('/passengers').push().key;
+      database.ref('/passengers').child(key).set({ phoneNumber: this.state.phoneNumber}, () => {
+        this.setState({ loading: false })
+        this.props.navigation.navigate("Map", {
+          "phone": this.state.phoneNumber,
+          "hasLocationPermission": this.state.hasLocationPermission,
+          "key": key
+        });
+
       });
+
     }
     else {alert(this.props.phrases.registerAlert)}
   }
 
  render() {
+   let progressBar = (<Progress.Bar style={{ width: "75%"}} color="#FFCE54" indeterminate={true} width={null} />)
    return (
    <View style={styles.container}>
       <StatusBar backgroundColor="grey"
@@ -97,9 +120,10 @@ class Registration extends React.Component {
         />
       </View>
       <TouchableOpacity style={styles.button}
-        onPress={this.onSubmit} >
+        onPress={this.onSubmit} disabled={this.state.loading} >
         <Text style={{fontSize: 20, color: "white", fontWeight: 'bold'}}>{this.props.phrases.register}</Text>
       </TouchableOpacity>
+      { this.state.loading ? progressBar : null }
       <Image style={styles.img}
             source={require('../assests/img/car-4.png')}
           />
@@ -113,8 +137,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "space-evenly",
-    height: "100%",
-    backgroundColor: "#ddd"
+    height: "100%"
   },
   title: {
     paddingTop: 30,

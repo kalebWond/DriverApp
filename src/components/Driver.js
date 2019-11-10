@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, 
-  Text, Image, Modal,
+  Text, Image, Modal, TouchableHighlight,
   StatusBar, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { changeLanguage } from '../actions/changeLanguage';
 import SettingsModal from './modal';
+import { database } from '../config/firebase';
+import * as Progress from 'react-native-progress';
 
 class Driver extends React.Component {
  
@@ -16,6 +18,9 @@ class Driver extends React.Component {
 
   state = {
     modalVisible: false,
+    searchingDriver: true,
+    key: '',
+    status: ''
   }
 
   static navigationOptions = ({ navigation}) => {
@@ -35,15 +40,56 @@ class Driver extends React.Component {
   }
 
 componentDidMount() {
-  this.props.navigation.setParams({ toggleModal: this._toggleModal });  
+  this.props.navigation.setParams({ toggleModal: this._toggleModal });
+  database.ref('/rides').on('value', (snapshot) => {
+    console.log(snapshot.val(), "snapshot")
+    if(snapshot.val() === null) {
+      return;
+    }
+    let key = this.props.navigation.getParam("rideKey");
+    console.log(key, "rideKey");
+    let data = snapshot.val()[key];
+    if(data === undefined) {
+      return;
+    }
+    this.setState({ key });
+
+    let status = data['driverStatus'];
+    if(status !== "pending") {
+      this.setState({ searchingDriver: false, status: status });
+    } else { this.setState({ searchingDriver: true }) }
+    console.log( status, "firebase");
+  })
 }
 
 _toggleModal = () => {
   this.setState({ modalVisible: !this.state.modalVisible });
 };
 
+cancelRequest = () => {
+  this.props.navigation.navigate('Map', {
+    phone: this.props.navigation.getParam("phone")
+  })
+  console.log(this.state.key)
+  let a = database.ref('/rides').child(this.state.key).set(null);
+  console.log(a);
+}
 
  render() {
+   if(this.state.searchingDriver) {
+     return (
+      <View style={{ height: "100%", justifyContent: "space-evenly", alignItems: "center"}}>
+        <Progress.Pie progress={0.4} indeterminate={true} size={200} color="#ddd" />
+        <Text style={{fontSize: 22}}>Requesting ride...</Text>
+        <TouchableOpacity onPress={ this.cancelRequest } style={styles.cancel}>
+          <Text style={{ fontSize: 20, color: "#156fca", fontWeight: "700" }}> Cancel the Request </Text>
+        </TouchableOpacity>
+        <SettingsModal toggleModal={this._toggleModal} modalVisible={this.state.modalVisible}
+        onChangeLanguage={this.props.onChangeLanguage} />
+      </View>
+      )
+   }
+
    return (
      <View style={styles.container}>
        <StatusBar backgroundColor="grey"
@@ -76,7 +122,7 @@ _toggleModal = () => {
 
             <View style={styles.detailGroup}>
               <Text style={styles.question}>{this.props.phrases.driverStatus}</Text>
-              <Text style={{...styles.answer, color: "blue"}}>{this.props.phrases.ontheway}</Text>
+              <Text style={{...styles.answer, fontSize: 18, color: "blue"}}>{this.state.status}</Text>
             </View>
           </View>
         </View>
@@ -90,7 +136,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "#eee",
+  },
+  cancel: {
+    width: "70%",
+    borderWidth: 3,
+    borderColor: "#156fca",
+    borderRadius: 7,
+    alignItems: 'center',
+    padding: 10
   },
   card: {
     width: "75%",

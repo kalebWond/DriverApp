@@ -61,7 +61,6 @@ pingLocation = () => {
             initialRegion: {...this.state.initialRegion, latitude, longitude},
             currentLocation: {latitude, longitude}
             });
-          console.log(this.state.initialRegion);
         },
         (error) => {
             // See error code charts below.
@@ -77,12 +76,13 @@ pingLocation = () => {
 }
 onBook = () => {
   if(this.state.destination.trim().length > 3) {
+
     this.props.navigation.navigate("Card", {
       phone: this.props.navigation.getParam("phone","0913467913"),
       pickup: this.state.currentLocation,
-      destination: this.state.destination
+      destination: this.state.destination,
+      passengerKey: this.props.navigation.getParam("key")
     });
-    console.log(this.props.navigation.state.params);
 
   }
   else {

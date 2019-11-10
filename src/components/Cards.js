@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { changeLanguage } from '../actions/changeLanguage';
 import SettingsModal  from './modal';
+import { database } from '../config/firebase';
 
 class Cards extends React.Component {
  
@@ -43,10 +44,22 @@ class Cards extends React.Component {
   };
 
   onPressCard = (type) => {
-    this.props.navigation.navigate('Driver',{
-      ...this.props.navigation.state.params, type: type
+
+    let key = database.ref('/rides').push().key;
+    database.ref('/rides').child(key).set({
+      phoneNumber: this.props.navigation.getParam("phone"),
+      pickup: this.props.navigation.getParam("pickup"),
+      destination: this.props.navigation.getParam("destination"),
+      type: type,
+      passengerKey: this.props.navigation.getParam("passengerKey"),
+      driverStatus: 'pending',    // ['pending', 'on the way', 'arrived']
+    }, () => {
+      this.props.navigation.navigate('Driver',{
+        ...this.props.navigation.state.params, 
+        type: type,
+        rideKey: key
+      });
     });
-    console.log(this.props.navigation.state.params);
 
   }
  render() {
